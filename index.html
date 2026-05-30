@@ -445,24 +445,6 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
   color: rgba(255,255,255,0.4); letter-spacing: 0.03em;
 }
 
-/* ── Contact form ───────────────────────────────────── */
-.cform { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
-.cform__field { display: flex; flex-direction: column; gap: 5px; }
-.cform__label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.13em; color: var(--text-muted); font-weight: 500; }
-.cform__input {
-  border: 1.5px solid rgba(19,18,103,0.18); border-radius: 0;
-  padding: 10px 12px; font-family: inherit; font-size: 14px; color: var(--navy);
-  background: #fff; outline: none; width: 100%; box-sizing: border-box;
-  transition: border-color 0.18s;
-}
-.cform__input:focus { border-color: var(--navy); }
-textarea.cform__input { resize: vertical; min-height: 90px; }
-.cform__submit { margin-top: 4px; width: 100%; }
-.cform__success { display: none; text-align: center; padding: 24px 0 8px; }
-.cform__success p { font-size: 15px; color: var(--text-muted); margin-top: 8px; }
-.cform__success .cform__checkmark { font-size: 32px; }
-.cform--sent .cform__fields { display: none; }
-.cform--sent .cform__success { display: block; }
 
 /* ── Modal ──────────────────────────────────────────── */
 .modal-backdrop {
@@ -702,7 +684,7 @@ textarea.cform__input { resize: vertical; min-height: 90px; }
     </div>
     <div class="footer__col">
       <h4>Contact</h4>
-      <a href="#" class="js-contact">Contact Us</a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=chubbys@endlessgrp.com" target="_blank" rel="noopener noreferrer">chubbys@endlessgrp.com</a>
     </div>
   </div>
   <p class="footer__legal">© <span id="js-year"></span> Chubby's Burgers</p>
@@ -733,41 +715,6 @@ textarea.cform__input { resize: vertical; min-height: 90px; }
   </div>
 </div>
 
-<!-- Contact Modal -->
-<div
-  class="modal-backdrop"
-  id="contact-modal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="contact-modal-title"
-  aria-hidden="true"
->
-  <div class="modal__sheet">
-    <button class="modal__close js-contact-close" aria-label="Close">&#215;</button>
-    <h2 class="section__title" id="contact-modal-title">Get in touch</h2>
-    <form class="cform" id="contact-form">
-      <div class="cform__fields">
-        <div class="cform__field">
-          <label class="cform__label" for="cf-name">Name</label>
-          <input class="cform__input" id="cf-name" name="name" type="text" required placeholder="Your name">
-        </div>
-        <div class="cform__field">
-          <label class="cform__label" for="cf-email">Email</label>
-          <input class="cform__input" id="cf-email" name="email" type="email" required placeholder="your@email.com">
-        </div>
-        <div class="cform__field">
-          <label class="cform__label" for="cf-msg">Message</label>
-          <textarea class="cform__input" id="cf-msg" name="message" required placeholder="Say hello…"></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary cform__submit">Send Message</button>
-      </div>
-      <div class="cform__success">
-        <div class="cform__checkmark">✓</div>
-        <p>Message sent! We'll be in touch soon.</p>
-      </div>
-    </form>
-  </div>
-</div>
 
 <script>
 (function () {
@@ -857,81 +804,6 @@ textarea.cform__input { resize: vertical; min-height: 90px; }
         if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
       }
     }
-  });
-
-  /* ── Contact modal ── */
-  var contactModal = document.getElementById('contact-modal');
-  var contactForm  = document.getElementById('contact-form');
-  var prevFocusC   = null;
-
-  function getFocusableC() {
-    return Array.from(contactModal.querySelectorAll(
-      'input, textarea, button:not([disabled]), a[href]'
-    ));
-  }
-
-  function openContactModal() {
-    prevFocusC = document.activeElement;
-    contactModal.classList.add('is-open');
-    contactModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    var f = getFocusableC();
-    if (f.length) f[0].focus();
-  }
-
-  function closeContactModal() {
-    contactModal.classList.remove('is-open');
-    contactModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (prevFocusC) prevFocusC.focus();
-  }
-
-  document.querySelectorAll('.js-contact').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.preventDefault();
-      openContactModal();
-    });
-  });
-
-  contactModal.addEventListener('click', function (e) {
-    if (e.target === contactModal) closeContactModal();
-  });
-
-  document.querySelectorAll('.js-contact-close').forEach(function (btn) {
-    btn.addEventListener('click', closeContactModal);
-  });
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && contactModal.classList.contains('is-open')) {
-      closeContactModal();
-    }
-  });
-
-  contactForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var btn = contactForm.querySelector('.cform__submit');
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
-    var data = {
-      name:    contactForm.querySelector('#cf-name').value,
-      email:   contactForm.querySelector('#cf-email').value,
-      message: contactForm.querySelector('#cf-msg').value
-    };
-    fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).then(function (res) {
-      if (res.ok) {
-        contactForm.classList.add('cform--sent');
-      } else {
-        btn.textContent = 'Something went wrong — try again';
-        btn.disabled = false;
-      }
-    }).catch(function () {
-      btn.textContent = 'Something went wrong — try again';
-      btn.disabled = false;
-    });
   });
 
   /* ── Scroll reveal (IntersectionObserver) ── */
