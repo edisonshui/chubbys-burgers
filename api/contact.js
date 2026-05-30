@@ -14,8 +14,8 @@ export default async function handler(req, res) {
   }
 
   const { error } = await resend.emails.send({
-    from: 'Chubby\'s Burgers <contact@YOUR_VERIFIED_DOMAIN>',
-    to: 'chubbys@endlessgrp.com',
+    from: 'Chubby\'s Burgers <onboarding@resend.dev>',
+    to: 'toedisonhui@gmail.com',
     replyTo: email,
     subject: `New message from ${name}`,
     text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
