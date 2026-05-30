@@ -410,10 +410,10 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
 /* ── Footer ─────────────────────────────────────────── */
 .footer {
   background: var(--navy); color: #fff;
-  padding: 32px var(--pad-x) 24px;
+  padding: 20px var(--pad-x) 16px;
 }
 .footer__logo {
-  width: 80px; height: auto; margin-bottom: 24px;
+  width: 56px; height: auto; margin-bottom: 16px;
   filter: brightness(0) invert(1);
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-spring);
 }
@@ -421,16 +421,16 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
   .footer__logo:hover { opacity: 0.75; transform: scale(1.04); }
 }
 .footer__cols {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 24px; max-width: 600px;
+  display: grid; grid-template-columns: repeat(4, auto);
+  gap: 20px 32px; max-width: 680px;
 }
 .footer__col h4 {
-  font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.55); margin: 0 0 8px; font-weight: 500;
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.55); margin: 0 0 6px; font-weight: 500;
 }
 .footer__col p,
 .footer__col a {
-  font-size: 13px; line-height: 1.6; color: #fff;
+  font-size: 12px; line-height: 1.5; color: #fff;
   text-decoration: none; display: block;
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
@@ -441,7 +441,7 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
   }
 }
 .footer__legal {
-  margin: 28px 0 0; font-size: 11px;
+  margin: 16px 0 0; font-size: 10px;
   color: rgba(255,255,255,0.4); letter-spacing: 0.03em;
 }
 
@@ -489,7 +489,7 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
   .counter__photo { min-height: 300px; order: -1; }
   .counter__copy  { padding: 48px var(--pad-x); }
   .loc__grid      { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .footer__cols   { grid-template-columns: 1fr 1fr; }
+  .footer__cols   { grid-template-columns: 1fr 1fr; gap: 16px 24px; }
 }
 
 @media (max-width: 540px) {
@@ -683,7 +683,7 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
     </div>
     <div class="footer__col">
       <h4>Contact</h4>
-      <a href="mailto:chubbys@endlessgrp.com">chubbys@endlessgrp.com</a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=chubbys@endlessgrp.com" target="_blank" rel="noopener noreferrer">chubbys@endlessgrp.com</a>
     </div>
   </div>
   <p class="footer__legal">© <span id="js-year"></span> Chubby's Burgers</p>
