@@ -745,12 +745,7 @@ textarea.cform__input { resize: vertical; min-height: 90px; }
   <div class="modal__sheet">
     <button class="modal__close js-contact-close" aria-label="Close">&#215;</button>
     <h2 class="section__title" id="contact-modal-title">Get in touch</h2>
-    <form
-      class="cform"
-      id="contact-form"
-      action="https://formspree.io/f/YOUR_FORM_ID"
-      method="POST"
-    >
+    <form class="cform" id="contact-form">
       <div class="cform__fields">
         <div class="cform__field">
           <label class="cform__label" for="cf-name">Name</label>
@@ -917,10 +912,15 @@ textarea.cform__input { resize: vertical; min-height: 90px; }
     var btn = contactForm.querySelector('.cform__submit');
     btn.textContent = 'Sending…';
     btn.disabled = true;
-    fetch(contactForm.action, {
+    var data = {
+      name:    contactForm.querySelector('#cf-name').value,
+      email:   contactForm.querySelector('#cf-email').value,
+      message: contactForm.querySelector('#cf-msg').value
+    };
+    fetch('/api/contact', {
       method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: new FormData(contactForm)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     }).then(function (res) {
       if (res.ok) {
         contactForm.classList.add('cform--sent');
