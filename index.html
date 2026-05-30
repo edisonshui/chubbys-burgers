@@ -410,10 +410,10 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
 /* ── Footer ─────────────────────────────────────────── */
 .footer {
   background: var(--navy); color: #fff;
-  padding: var(--space-xl) var(--pad-x) 40px;
+  padding: 32px var(--pad-x) 24px;
 }
 .footer__logo {
-  width: 120px; height: auto; margin-bottom: 40px;
+  width: 80px; height: auto; margin-bottom: 24px;
   filter: brightness(0) invert(1);
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-spring);
 }
@@ -422,15 +422,15 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
 }
 .footer__cols {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 32px; max-width: 720px;
+  gap: 24px; max-width: 600px;
 }
 .footer__col h4 {
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.55); margin: 0 0 12px; font-weight: 500;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.55); margin: 0 0 8px; font-weight: 500;
 }
 .footer__col p,
 .footer__col a {
-  font-size: 15px; line-height: 1.7; color: #fff;
+  font-size: 13px; line-height: 1.6; color: #fff;
   text-decoration: none; display: block;
   transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
@@ -441,7 +441,7 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
   }
 }
 .footer__legal {
-  margin: 56px 0 0; font-size: 12px;
+  margin: 28px 0 0; font-size: 11px;
   color: rgba(255,255,255,0.4); letter-spacing: 0.03em;
 }
 
@@ -562,7 +562,7 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
       alt="Chubby's Burgers"
       fetchpriority="high"
     >
-    <h1 class="hero__headline">Smashed. Crispy.<br>Done right.</h1>
+    <h1 class="hero__headline">THE BEST <em>SMASH</em>. PERIOD.</h1>
     <p class="hero__sub">Smash Burgers &middot; CID Seattle</p>
     <a class="btn btn--primary hero__cta" href="#menu">See the Menu</a>
   </div>
@@ -626,23 +626,6 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
   </div>
 </section>
 
-<!-- Counter -->
-<section class="counter">
-  <div
-    class="counter__photo"
-    role="img"
-    aria-label="Chubby's Burgers counter inside Uwajimaya Food Court, Seattle"
-  ></div>
-  <div class="counter__copy reveal">
-    <span class="eyebrow eyebrow--light">Inside Uwajimaya</span>
-    <h2 class="section__title section__title--light">The counter</h2>
-    <p class="counter__text">
-      White tile. Navy boards. A simple menu done right.
-      Find us inside Uwajimaya Food Court in Seattle's Chinatown-International District.
-    </p>
-  </div>
-</section>
-
 <!-- Find Us -->
 <section id="loc" class="loc">
   <div class="section__head reveal">
@@ -702,7 +685,7 @@ button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: tra
       <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
     </div>
   </div>
-  <p class="footer__legal">© <span id="js-year"></span> Chubby's Burgers — Smash Burgers · CID Seattle</p>
+  <p class="footer__legal">© <span id="js-year"></span> Chubby's Burgers</p>
 </footer>
 
 <!-- Order Modal -->
