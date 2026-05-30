@@ -1,8 +1,8 @@
-import { Resend } from 'resend';
+const { Resend } = require('resend');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   }
 
   const { error } = await resend.emails.send({
-    from: 'Chubby\'s Burgers <onboarding@resend.dev>',
+    from: "Chubby's Burgers <onboarding@resend.dev>",
     to: 'toedisonhui@gmail.com',
     replyTo: email,
     subject: `New message from ${name}`,
@@ -22,8 +22,9 @@ export default async function handler(req, res) {
   });
 
   if (error) {
+    console.error('Resend error:', error);
     return res.status(500).json({ error: 'Failed to send email' });
   }
 
   return res.status(200).json({ ok: true });
-}
+};
