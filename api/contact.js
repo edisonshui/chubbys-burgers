@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
 
   const { error } = await resend.emails.send({
     from: "Chubby's Burgers <onboarding@resend.dev>",
-    to: 'toedisonhui@gmail.com',
+    to: 'chubbys@endlessgrp.com',
     replyTo: email,
     subject: `New message from ${name}`,
     text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
