@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#131267">
+<title>Chubby's Burgers — Smash Burgers in Seattle's Chinatown-International District</title>
+<meta name="description" content="Chubby's Burgers — smashed, crispy, done right. House-made sauce, a simple menu, and $7 smash burgers inside Uwajimaya in Seattle's CID.">
+<meta name="keywords" content="smash burger Seattle, smash burger Chinatown Seattle, burgers near Uwajimaya, CID Seattle food, best smash burger Seattle">
+<meta property="og:type" content="restaurant">
+<meta property="og:title" content="Chubby's Burgers — Smash Burgers · CID Seattle">
+<meta property="og:description" content="Crispy smash burgers inside Uwajimaya Food Court. Starting at $7.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap">
+
+<style>
+/* ── Design tokens ─────────────────────────────────── */
+:root {
+  --navy:         #131267;
+  --white:        #FFFFFF;
+  --off-white:    #F5F5F3;
+  --navy-soft:    #1A1980;
+  --navy-10:      #E8E8F5;
+  --text-muted:   #6B6B99;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+  --text-hero:    clamp(42px, 8vw, 72px);
+  --text-section: clamp(26px, 4vw, 40px);
+  --text-item:    clamp(17px, 2vw, 22px);
+  --text-nav:     13px;
+  --space-xl:     64px;
+  --space-2xl:    128px;
+  --max-width:    1200px;
+  --pad-x:        64px;
+  --nav-h:        68px;
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur:          0.25s;
+}
+
+@media (max-width: 820px)  { :root { --pad-x: 24px; } }
+@media (max-width: 480px)  { :root { --pad-x: 16px; --space-2xl: 80px; --space-xl: 48px; } }
+
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--navy);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+img  { display: block; max-width: 100%; }
+a    { color: inherit; }
+button { font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* Anchor links scroll clear of sticky nav */
+[id] { scroll-margin-top: var(--nav-h); }
+
+/* ── Keyframes ──────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUpScale {
+  from { opacity: 0; transform: translateY(22px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+@keyframes kenBurns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.07); }
+}
+
+/* ── Hero entrance ──────────────────────────────────── */
+.hero__logo     { animation: fadeUpScale 0.9s  var(--ease-spring) 0.08s  both; }
+.hero__headline { animation: fadeUp      0.75s var(--ease-out)    0.22s  both; }
+.hero__sub      { animation: fadeUp      0.65s var(--ease-out)    0.36s  both; }
+.hero__cta      { animation: fadeUpScale 0.65s var(--ease-spring) 0.50s  both; }
+
+/* ── Scroll reveal ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children (loc grid, etc.) */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+}
+.reveal-stagger.is-visible > * { opacity: 1; transform: none; }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.00s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.10s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.20s; }
+
+/* Staggered menu rows */
+.reveal-list .menu__row {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.reveal-list.is-visible .menu__row           { opacity: 1; transform: none; }
+.reveal-list.is-visible .menu__row:nth-child(1) { transition-delay: 0.00s; }
+.reveal-list.is-visible .menu__row:nth-child(2) { transition-delay: 0.08s; }
+.reveal-list.is-visible .menu__row:nth-child(3) { transition-delay: 0.16s; }
+.reveal-list.is-visible .menu__row:nth-child(4) { transition-delay: 0.24s; }
+
+/* ── Shared ─────────────────────────────────────────── */
+.eyebrow {
+  display: block;
+  font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--text-muted); margin-bottom: 14px;
+}
+.eyebrow--light { color: rgba(255,255,255,0.6); }
+
+.section__head {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+.section__title {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 400; line-height: 1.08; letter-spacing: -0.01em;
+  color: var(--navy);
+}
+.section__title--light { color: #fff; }
+
+/* ── Buttons ────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-body); font-size: var(--text-nav); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.13em;
+  padding: 14px 30px; border: 1px solid var(--navy);
+  text-decoration: none;
+  transition: background var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease-spring),
+              opacity var(--dur) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.btn--primary  { background: var(--navy);  color: var(--white); }
+.btn--secondary { background: var(--white); color: var(--navy); }
+
+@media (hover: hover) {
+  .btn--primary:hover   {
+    background: var(--navy-soft);
+    border-color: var(--navy-soft);
+    transform: translateY(-2px);
+  }
+  .btn--secondary:hover {
+    background: var(--navy-10);
+    transform: translateY(-2px);
+  }
+}
+.btn:active {
+  opacity: 0.75;
+  transform: translateY(1px) scale(0.98) !important;
+  transition-duration: 0.08s !important;
+}
+
+/* ── Nav ────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: transparent;
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.nav--scrolled {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 var(--navy-10);
+}
+.nav__inner {
+  max-width: var(--max-width); margin: 0 auto;
+  padding: 0 var(--pad-x);
+  height: var(--nav-h);
+  display: flex; align-items: center; gap: 24px;
+}
+.nav__logo {
+  display: flex; align-items: center;
+  text-decoration: none; flex-shrink: 0;
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-spring);
+}
+.nav__logo img { height: 44px; width: auto; }
+@media (hover: hover) {
+  .nav__logo:hover { opacity: 0.75; transform: scale(1.03); }
+}
+
+.nav__links {
+  margin-left: auto; display: flex; align-items: center; gap: 28px;
+}
+.nav__link {
+  background: none; border: none; padding: 0;
+  font-size: var(--text-nav); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.13em; color: var(--navy);
+  text-decoration: none; min-height: 44px;
+  display: inline-flex; align-items: center;
+  position: relative;
+  transition: opacity var(--dur) var(--ease);
+}
+
+/* Underline slide animation on nav links */
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: 12px; left: 0; right: 0;
+  height: 1px;
+  background: var(--navy);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s var(--ease-out);
+}
+@media (hover: hover) {
+  .nav__link:hover            { opacity: 1; }
+  .nav__link:hover::after     { transform: scaleX(1); }
+}
+.nav__order { padding: 11px 22px; }
+/* hide underline on the order button */
+.nav__order::after { display: none; }
+
+/* Burger icon */
+.nav__burger {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  margin-left: auto; background: none; border: none;
+  width: 44px; height: 44px; padding: 10px;
+}
+.nav__burger span {
+  width: 22px; height: 2px; background: var(--navy); display: block;
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  transform-origin: center;
+}
+.nav__burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__burger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav__burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav__mobile {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  background: #fff;
+}
+.nav__mobile.is-open {
+  max-height: 260px;
+  box-shadow: 0 6px 20px rgba(19,18,103,0.08);
+}
+.nav__mobile-inner {
+  padding: 12px var(--pad-x) 20px;
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--navy-10);
+}
+.nav__mlink {
+  background: none; border: none; text-align: left;
+  font-size: 15px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.13em; color: var(--navy);
+  padding: 13px 0; display: flex; align-items: center;
+  text-decoration: none; min-height: 44px;
+  border-bottom: 1px solid var(--navy-10);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.nav__mlink:last-child { border-bottom: none; }
+@media (hover: hover) {
+  .nav__mlink:hover { opacity: 0.55; transform: translateX(4px); }
+}
+
+@media (max-width: 820px) {
+  .nav__links  { display: none; }
+  .nav__burger { display: flex; }
+}
+
+/* ── Hero ───────────────────────────────────────────── */
+.hero {
+  min-height: calc(100svh - var(--nav-h));
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding: clamp(48px,10vh,96px) var(--pad-x) clamp(64px,12vh,112px);
+  margin-top: calc(-1 * var(--nav-h));
+  padding-top: calc(clamp(48px,10vh,96px) + var(--nav-h));
+}
+.hero__inner { display: flex; flex-direction: column; align-items: center; }
+.hero__logo  { width: clamp(160px, 38vw, 280px); height: auto; margin-bottom: 36px; }
+.hero__headline {
+  font-family: var(--font-display);
+  font-size: var(--text-hero); font-weight: 400;
+  line-height: 1.02; letter-spacing: -0.015em;
+  color: var(--navy); margin-bottom: 0.28em;
+}
+.hero__sub {
+  font-size: 13px; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--text-muted); margin-bottom: 34px;
+}
+.hero__cta { padding: 16px 38px; }
+
+/* ── Menu ───────────────────────────────────────────── */
+.menu { padding: var(--space-2xl) 0; }
+.menu__grid {
+  max-width: var(--max-width); margin: 40px auto 0;
+  padding: 0 var(--pad-x);
+  display: grid; grid-template-columns: 1.5fr 1fr; gap: 72px; align-items: start;
+}
+.menu__list { display: flex; flex-direction: column; }
+.menu__row  { padding: 20px 0; border-bottom: 1px solid var(--navy-10); }
+.menu__row:first-child { padding-top: 0; }
+.menu__rowtop { display: flex; align-items: baseline; gap: 16px; }
+.menu__name {
+  font-size: var(--text-item); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.01em;
+}
+.menu__price {
+  margin-left: auto; font-size: var(--text-item); font-weight: 700;
+  font-variant-numeric: tabular-nums; flex-shrink: 0;
+}
+.menu__desc { display: block; margin-top: 5px; font-size: 14px; color: var(--text-muted); }
+
+/* Subtle menu row hover */
+@media (hover: hover) {
+  .menu__row {
+    transition: background var(--dur) var(--ease),
+                padding-left var(--dur) var(--ease),
+                padding-right var(--dur) var(--ease);
+    border-radius: 2px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .menu__row:hover { background: var(--off-white); }
+}
+
+.addons {
+  background: var(--off-white); padding: 28px 30px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.addons__group ul { list-style: none; margin: 10px 0 0; }
+.addons__group li {
+  font-size: 15px; color: var(--navy); padding: 4px 0;
+  transition: transform 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
+}
+@media (hover: hover) {
+  .addons__group li:hover { transform: translateX(4px); opacity: 0.7; }
+}
+.addons__head {
+  font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--navy); display: flex; justify-content: space-between; align-items: baseline;
+}
+.addons__head span { font-weight: 500; color: var(--text-muted); font-size: 12px; letter-spacing: 0.04em; }
+.addons__note { font-size: 12px; color: var(--text-muted); }
+
+/* ── Counter ────────────────────────────────────────── */
+.counter {
+  background: var(--navy);
+  display: grid; grid-template-columns: 1fr 1fr; align-items: stretch;
+  overflow: hidden;
+}
+.counter__photo {
+  background-image: url("Pictures/FXM50072.JPG");
+  background-size: cover; background-position: center;
+  min-height: 480px;
+  animation: kenBurns 18s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+.counter__copy {
+  padding: var(--space-2xl) var(--pad-x);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.counter__text {
+  color: rgba(255,255,255,0.78); font-size: 16px; line-height: 1.7;
+  max-width: 420px; margin: 22px 0 0;
+}
+
+/* ── Find Us ────────────────────────────────────────── */
+.loc { padding: var(--space-2xl) 0; }
+.loc__grid {
+  max-width: var(--max-width); margin: 44px auto 0;
+  padding: 0 var(--pad-x);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
+}
+.loc__col h4 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--text-muted); margin: 0 0 12px; font-weight: 600;
+}
+.loc__col p { font-size: 16px; line-height: 1.6; margin: 0 0 10px; }
+.loc__muted { color: var(--text-muted) !important; font-size: 14px !important; }
+.loc__orders { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.link {
+  font-size: 16px; color: var(--navy); text-decoration: underline;
+  text-underline-offset: 3px; text-decoration-color: var(--navy-10);
+  transition: text-decoration-color var(--dur) var(--ease);
+  display: inline-block;
+}
+@media (hover: hover) { .link:hover { text-decoration-color: var(--navy); } }
+
+/* ── Footer ─────────────────────────────────────────── */
+.footer {
+  background: var(--navy); color: #fff;
+  padding: var(--space-xl) var(--pad-x) 40px;
+}
+.footer__logo {
+  width: 120px; height: auto; margin-bottom: 40px;
+  filter: brightness(0) invert(1);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-spring);
+}
+@media (hover: hover) {
+  .footer__logo:hover { opacity: 0.75; transform: scale(1.04); }
+}
+.footer__cols {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 32px; max-width: 720px;
+}
+.footer__col h4 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.55); margin: 0 0 12px; font-weight: 500;
+}
+.footer__col p,
+.footer__col a {
+  font-size: 15px; line-height: 1.7; color: #fff;
+  text-decoration: none; display: block;
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+@media (hover: hover) {
+  .footer__col a:hover {
+    opacity: 0.7;
+    transform: translateX(3px);
+  }
+}
+.footer__legal {
+  margin: 56px 0 0; font-size: 12px;
+  color: rgba(255,255,255,0.4); letter-spacing: 0.03em;
+}
+
+/* ── Modal ──────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(19,18,103,0.45);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.28s var(--ease), visibility 0.28s var(--ease);
+}
+.modal-backdrop.is-open { opacity: 1; visibility: visible; }
+.modal__sheet {
+  background: #fff; max-width: 440px; width: 100%;
+  padding: 40px; position: relative;
+  opacity: 0;
+  transform: translateY(18px) scale(0.97);
+  transition: transform 0.38s var(--ease-spring),
+              opacity   0.28s var(--ease-out);
+}
+.modal-backdrop.is-open .modal__sheet {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.modal__close {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none; font-size: 26px; line-height: 1;
+  color: var(--navy); padding: 0;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease-spring);
+}
+@media (hover: hover) {
+  .modal__close:hover { opacity: 0.5; transform: rotate(90deg) scale(1.1); }
+}
+.modal__text { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 16px 0 26px; }
+.modal__actions { display: flex; gap: 12px; }
+.modal__actions .btn { flex: 1; }
+.modal__dir { margin-top: 22px; font-size: 15px; }
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 820px) {
+  .menu__grid     { grid-template-columns: 1fr; gap: 36px; }
+  .counter        { grid-template-columns: 1fr; }
+  .counter__photo { min-height: 300px; order: -1; }
+  .counter__copy  { padding: 48px var(--pad-x); }
+  .loc__grid      { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .footer__cols   { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 540px) {
+  .loc__grid      { grid-template-columns: 1fr; }
+  .footer__cols   { grid-template-columns: 1fr; gap: 24px; }
+  .modal__actions { flex-direction: column; }
+  .modal__sheet   { padding: 32px 24px; }
+  .footer__legal  { margin-top: 40px; }
+}
+
+/* ── Respect reduced motion ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .reveal, .reveal-stagger > *, .reveal-list .menu__row {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero__logo, .hero__headline, .hero__sub, .hero__cta {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav" id="nav" aria-label="Site navigation">
+  <div class="nav__inner">
+    <a class="nav__logo" href="#top" aria-label="Chubby's Burgers — scroll to top">
+      <img src="Chubby's Logo.svg" alt="Chubby's Burgers" height="44">
+    </a>
+    <div class="nav__links" role="list">
+      <a class="nav__link" href="#menu" role="listitem">Menu</a>
+      <a class="nav__link" href="#loc" role="listitem">Hours &amp; Location</a>
+      <button class="btn btn--primary nav__order js-order" role="listitem">Order Now</button>
+    </div>
+    <button
+      class="nav__burger js-burger"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="mobile-menu" aria-label="Mobile navigation">
+    <div class="nav__mobile-inner">
+      <a class="nav__mlink js-mlink" href="#menu">Menu</a>
+      <a class="nav__mlink js-mlink" href="#loc">Hours &amp; Location</a>
+      <button class="nav__mlink js-order js-mlink">Order Now</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="top">
+  <div class="hero__inner">
+    <img
+      class="hero__logo"
+      src="Chubby's Logo.svg"
+      alt="Chubby's Burgers"
+      fetchpriority="high"
+    >
+    <h1 class="hero__headline">Smashed. Crispy.<br>Done right.</h1>
+    <p class="hero__sub">Smash Burgers &middot; CID Seattle</p>
+    <a class="btn btn--primary hero__cta" href="#menu">See the Menu</a>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu" class="menu">
+  <div class="section__head reveal">
+    <span class="eyebrow">The Menu</span>
+    <h2 class="section__title">Simple. Done right.</h2>
+  </div>
+  <div class="menu__grid">
+    <div class="menu__list reveal-list">
+      <div class="menu__row">
+        <div class="menu__rowtop">
+          <span class="menu__name">Smash Burger</span>
+          <span class="menu__price">$7</span>
+        </div>
+        <span class="menu__desc">Single patty, house sauce, pickles</span>
+      </div>
+      <div class="menu__row">
+        <div class="menu__rowtop">
+          <span class="menu__name">Double Smash</span>
+          <span class="menu__price">$8</span>
+        </div>
+        <span class="menu__desc">Double patty, house sauce, pickles, onions</span>
+      </div>
+      <div class="menu__row">
+        <div class="menu__rowtop">
+          <span class="menu__name">Fries</span>
+          <span class="menu__price">$4</span>
+        </div>
+        <span class="menu__desc">Crispy, salted</span>
+      </div>
+      <div class="menu__row">
+        <div class="menu__rowtop">
+          <span class="menu__name">Drinks</span>
+          <span class="menu__price">$3</span>
+        </div>
+      </div>
+    </div>
+    <div class="addons reveal" style="transition-delay: 0.15s;">
+      <div class="addons__group">
+        <p class="addons__head">Add-ons <span>+$0.50 each</span></p>
+        <ul>
+          <li>Lettuce</li>
+          <li>Tomato</li>
+          <li>Diced Raw Onions</li>
+        </ul>
+      </div>
+      <div class="addons__group">
+        <p class="addons__head">Add-ons <span>+$1.00 each</span></p>
+        <ul>
+          <li>Bacon</li>
+          <li>Grilled Onions</li>
+          <li>Grilled Mushrooms</li>
+        </ul>
+      </div>
+      <p class="addons__note">Menu and prices subject to change.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Counter -->
+<section class="counter">
+  <div
+    class="counter__photo"
+    role="img"
+    aria-label="Chubby's Burgers counter inside Uwajimaya Food Court, Seattle"
+  ></div>
+  <div class="counter__copy reveal">
+    <span class="eyebrow eyebrow--light">Inside Uwajimaya</span>
+    <h2 class="section__title section__title--light">The counter</h2>
+    <p class="counter__text">
+      White tile. Navy boards. A simple menu done right.
+      Find us inside Uwajimaya Food Court in Seattle's Chinatown-International District.
+    </p>
+  </div>
+</section>
+
+<!-- Find Us -->
+<section id="loc" class="loc">
+  <div class="section__head reveal">
+    <span class="eyebrow">Find Us</span>
+    <h2 class="section__title">Hours &amp; Location</h2>
+  </div>
+  <div class="loc__grid reveal-stagger">
+    <div class="loc__col">
+      <h4>Hours</h4>
+      <p>Monday – Friday<br>11am – 7pm</p>
+      <p>Saturday – Sunday<br>11am – 6pm</p>
+    </div>
+    <div class="loc__col">
+      <h4>Location</h4>
+      <p>Inside Uwajimaya Food Court</p>
+      <p>600 S Weller St<br>Seattle, WA 98104</p>
+      <p class="loc__muted">Chinatown-International District</p>
+      <a
+        href="https://maps.google.com/?q=600+S+Weller+St+Seattle+WA+98104"
+        target="_blank" rel="noopener noreferrer"
+        class="link" style="margin-top: 8px;"
+      >Get Directions ↗</a>
+    </div>
+    <div class="loc__col">
+      <h4>Order Online</h4>
+      <p>Available for delivery and pickup.</p>
+      <div class="loc__orders">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn--primary">Uber Eats</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn--secondary">DoorDash</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <img
+    class="footer__logo"
+    src="Chubby's Logo.svg"
+    alt="Chubby's Burgers"
+    height="40"
+    loading="lazy"
+  >
+  <div class="footer__cols">
+    <div class="footer__col">
+      <h4>Hours</h4>
+      <p>Mon–Fri: 11am–7pm<br>Sat–Sun: 11am–6pm</p>
+    </div>
+    <div class="footer__col">
+      <h4>Location</h4>
+      <p>Uwajimaya Food Court<br>600 S Weller St<br>Seattle, WA 98104</p>
+    </div>
+    <div class="footer__col">
+      <h4>Order &amp; Follow</h4>
+      <a href="#" target="_blank" rel="noopener noreferrer">Uber Eats</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">DoorDash</a>
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </div>
+  </div>
+  <p class="footer__legal">© <span id="js-year"></span> Chubby's Burgers — Smash Burgers · CID Seattle</p>
+</footer>
+
+<!-- Order Modal -->
+<div
+  class="modal-backdrop"
+  id="order-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-title"
+  aria-hidden="true"
+>
+  <div class="modal__sheet" id="modal-sheet">
+    <button class="modal__close js-modal-close" aria-label="Close">&#215;</button>
+    <h2 class="section__title" id="modal-title">Order online</h2>
+    <p class="modal__text">Choose your platform for delivery or pickup.</p>
+    <div class="modal__actions">
+      <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn--primary">Uber Eats</a>
+      <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn--secondary">DoorDash</a>
+    </div>
+    <a
+      href="https://maps.google.com/?q=600+S+Weller+St+Seattle+WA+98104"
+      target="_blank" rel="noopener noreferrer"
+      class="link modal__dir"
+    >Get Directions ↗</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Nav: scroll state ── */
+  var nav = document.getElementById('nav');
+  function updateNav() {
+    nav.classList.toggle('nav--scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  /* ── Mobile menu ── */
+  var burger     = document.querySelector('.js-burger');
+  var mobileMenu = document.getElementById('mobile-menu');
+
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('is-open');
+    burger.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Open navigation menu');
+  }
+
+  burger.addEventListener('click', function () {
+    var isOpen = mobileMenu.classList.toggle('is-open');
+    burger.classList.toggle('is-open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    burger.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+  });
+
+  document.querySelectorAll('.js-mlink').forEach(function (el) {
+    el.addEventListener('click', closeMobileMenu);
+  });
+
+  /* ── Order modal ── */
+  var modal    = document.getElementById('order-modal');
+  var prevFocus = null;
+
+  function getFocusable() {
+    return Array.from(modal.querySelectorAll(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ));
+  }
+
+  function openModal() {
+    prevFocus = document.activeElement;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var focusable = getFocusable();
+    if (focusable.length) focusable[0].focus();
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (prevFocus) prevFocus.focus();
+  }
+
+  document.querySelectorAll('.js-order').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      closeMobileMenu();
+      openModal();
+    });
+  });
+
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) closeModal();
+  });
+
+  document.querySelector('.js-modal-close').addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+      closeModal();
+      return;
+    }
+    if (e.key === 'Tab' && modal.classList.contains('is-open')) {
+      var focusable = getFocusable();
+      var first = focusable[0];
+      var last  = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+      }
+    }
+  });
+
+  /* ── Scroll reveal (IntersectionObserver) ── */
+  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger, .reveal-list');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.10, rootMargin: '0px 0px -32px 0px' });
+
+    revealEls.forEach(function (el) { observer.observe(el); });
+  } else {
+    /* Fallback: show everything immediately for old browsers */
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  /* ── Footer year ── */
+  var yearEl = document.getElementById('js-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+}());
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Chubby's Burgers",
+  "description": "Crispy smash burgers inside Uwajimaya Food Court in Seattle's Chinatown-International District.",
+  "servesCuisine": ["American", "Burgers"],
+  "priceRange": "$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "600 S Weller St",
+    "addressLocality": "Seattle",
+    "addressRegion": "WA",
+    "postalCode": "98104",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "11:00",
+      "closes": "19:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday","Sunday"],
+      "opens": "11:00",
+      "closes": "18:00"
+    }
+  ],
+  "hasMap": "https://maps.google.com/?q=600+S+Weller+St+Seattle+WA+98104",
+  "hasMenu": {
+    "@type": "Menu",
+    "hasMenuSection": [
+      {
+        "@type": "MenuSection",
+        "name": "Burgers",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "Smash Burger",  "offers": { "@type": "Offer", "price": "7.00", "priceCurrency": "USD" } },
+          { "@type": "MenuItem", "name": "Double Smash",  "offers": { "@type": "Offer", "price": "8.00", "priceCurrency": "USD" } }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "Sides & Drinks",
+        "hasMenuItem": [
+          { "@type": "MenuItem", "name": "Fries",   "offers": { "@type": "Offer", "price": "4.00", "priceCurrency": "USD" } },
+          { "@type": "MenuItem", "name": "Drinks",  "offers": { "@type": "Offer", "price": "3.00", "priceCurrency": "USD" } }
+        ]
+      }
+    ]
+  }
+}
+</script>
+</body>
+</html>
